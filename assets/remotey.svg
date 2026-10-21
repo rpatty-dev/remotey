@@ -1,88 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
-  <defs>
-    <!-- Background Gradient -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0F172A"/>
-      <stop offset="50%" stop-color="#1E1B4B"/>
-      <stop offset="100%" stop-color="#311042"/>
-    </linearGradient>
+  <!-- Pure, Crisp Dark Canvas -->
+  <rect width="512" height="512" rx="108" fill="#000000"/>
+  <rect width="508" height="508" x="2" y="2" rx="106" fill="none" stroke="#222222" stroke-width="2"/>
 
-    <!-- Vibrant Accent Gradient -->
-    <linearGradient id="neonGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38BDF8"/>
-      <stop offset="50%" stop-color="#818CF8"/>
-      <stop offset="100%" stop-color="#C084FC"/>
-    </linearGradient>
-
-    <!-- Glass Fill -->
-    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.16"/>
-      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.04"/>
-    </linearGradient>
-
-    <!-- Drop Shadow Filters -->
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="16" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.45"/>
-    </filter>
-  </defs>
-
-  <!-- App Squircle Canvas -->
-  <rect width="512" height="512" rx="114" fill="url(#bgGrad)"/>
-  <rect width="508" height="508" x="2" y="2" rx="112" fill="none" stroke="url(#neonGlow)" stroke-width="2" stroke-opacity="0.4"/>
-
-  <!-- Glowing Aura Backing -->
-  <circle cx="256" cy="210" r="130" fill="url(#neonGlow)" opacity="0.22" filter="url(#glow)"/>
-
-  <!-- Computer Screen Outline (Windows Remote Target) -->
-  <g filter="url(#shadow)">
-    <!-- Monitor Bezel -->
-    <rect x="116" y="96" width="280" height="186" rx="20" fill="url(#glassGrad)" stroke="url(#neonGlow)" stroke-width="3.5"/>
-    <!-- Screen Inner Display -->
-    <rect x="126" y="106" width="260" height="152" rx="12" fill="#0B0F19" fill-opacity="0.9"/>
-    
-    <!-- Code / Remote Interface Lines -->
-    <circle cx="146" cy="124" r="4.5" fill="#EF4444"/>
-    <circle cx="160" cy="124" r="4.5" fill="#F59E0B"/>
-    <circle cx="174" cy="124" r="4.5" fill="#10B981"/>
-
-    <!-- Pulse Signal Wave on Screen -->
-    <path d="M 148 184 L 198 184 L 214 150 L 234 214 L 254 170 L 268 194 L 284 184 L 364 184" 
-          fill="none" stroke="url(#neonGlow)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-
-    <!-- Stand & Base -->
-    <path d="M 236 282 L 232 322 L 280 322 L 276 282 Z" fill="url(#neonGlow)" opacity="0.8"/>
-    <rect x="196" y="322" width="120" height="10" rx="5" fill="url(#neonGlow)"/>
+  <!-- Minimalist Remote Display Icon -->
+  <g transform="translate(136, 110)">
+    <!-- Display Housing -->
+    <rect x="0" y="0" width="240" height="156" rx="18" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linejoin="round"/>
+    <!-- Stand -->
+    <line x1="120" y1="156" x2="120" y2="204" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+    <line x1="72" y1="204" x2="168" y2="204" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+    <!-- Signal Indicator inside Screen -->
+    <circle cx="120" cy="78" r="18" fill="#FFFFFF"/>
+    <path d="M 86 52 A 48 48 0 0 1 154 52" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 68 34 A 74 74 0 0 1 172 34" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
   </g>
 
-  <!-- Autonomous Lightning / Cursor Overlay -->
-  <g filter="url(#shadow)">
-    <polygon points="296,220 334,310 306,310 322,356 274,272 302,272" fill="#FACC15" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round"/>
-  </g>
-
-  <!-- Typography: Remotey (SF Pro Display vibe) -->
-  <text x="256" y="420" 
+  <!-- Typography: Pure SF Pro Display with crisp black stroke -->
+  <text x="256" y="410" 
         text-anchor="middle" 
-        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" 
-        font-size="44" 
-        font-weight="800" 
-        letter-spacing="1.5" 
+        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif" 
+        font-size="64" 
+        font-weight="700" 
+        letter-spacing="-1.5"
+        stroke="#000000"
+        stroke-width="8"
+        stroke-linejoin="round"
+        paint-order="stroke fill"
         fill="#FFFFFF">
     Remotey
-  </text>
-
-  <!-- Subtitle -->
-  <text x="256" y="454" 
-        text-anchor="middle" 
-        font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" 
-        font-size="16" 
-        font-weight="600" 
-        letter-spacing="2.5" 
-        fill="#94A3B8">
-    AUTONOMOUS COMPUTER USE
   </text>
 </svg>

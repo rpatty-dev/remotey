@@ -25,6 +25,25 @@ Instead of running slow, heavyweight VNC or Remote Desktop protocols, Remotey us
 
 ---
 
+## 📋 Prerequisites & Setup
+
+Before running Remotey, ensure both machines are connected via **Tailscale** (or share a local LAN):
+
+1. **Install Tailscale**: Download and install [Tailscale](https://tailscale.com/download) on both your Mac/client machine and your remote Windows PC.
+2. **Log in to the same Tailnet**: Ensure both devices appear as "Connected" in your Tailscale admin console.
+3. **Note the Windows Tailscale IP**: It starts with `100.x.y.z` (e.g. `100.71.60.14`).
+
+> [!IMPORTANT]
+> ### ⚠️ Critical Antivirus & Firewall Disclaimer
+> If your Windows PC uses **third-party antivirus or endpoint security** (such as **ESET**, **Malwarebytes**, **Norton**, **Bitdefender**, **Kaspersky**, or **CrowdStrike**), their custom personal firewalls will often intercept and drop incoming Tailscale connections on port `7777`, even if Windows Defender Firewall has allowed the port!
+>
+> If you experience a `connection timeout` when running `remotey status`:
+> 1. Check your 3rd-party antivirus firewall settings.
+> 2. Add an inbound allow rule for **TCP port 7777** (or temporarily pause/allow the Tailscale network adapter `100.64.0.0/10`).
+> 3. Verify connection with `remotey status`.
+
+---
+
 ## 🚀 Quickstart (30 Seconds)
 
 ### Step 1: Start the Agent on your Windows PC

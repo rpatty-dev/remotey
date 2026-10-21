@@ -1,74 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="100%" height="100%" fill="none">
-  <!-- Style Tokens: Editorial Dark System (Cathryn Lavery Sequence Diagram Standards) -->
-  <defs>
-    <marker id="seq-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
-    </marker>
-    <marker id="seq-dash" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8"/>
-    </marker>
-  </defs>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1000 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="sequence-remotey-title sequence-remotey-desc" id="sequence-root">
+      <title id="sequence-remotey-title">Remotey Autonomous Sequence</title>
+      <desc id="sequence-remotey-desc">Step-by-step sequence of an autonomous agent inspecting screen state and dispatching hardware input</desc>
 
-  <!-- Background -->
-  <rect width="960" height="420" fill="#090d16"/>
+      <defs>
+      <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;family=Noto+Serif:ital@0;1&amp;family=Noto+Sans+KR:wght@400;500;600&amp;family=Noto+Serif+KR:wght@400&amp;family=Noto+Sans+TC:wght@400;500;600&amp;family=Noto+Serif+TC:wght@400&amp;display=swap');
+      #sequence-root { --color-paper:   #090d16;
+      --color-ink:     #f8fafc;
+      --color-muted:   #94a3b8;
+      --color-accent:  #0284c7;
+      --color-cyan:    #38bdf8;
+      --font-sans:     'Geist', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace; }
+      #sequence-root { color: var(--color-ink); font-family: var(--font-sans); }</style>
+        <marker id="sequence-sq-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#38bdf8"/>
+        </marker>
+        <marker id="sequence-sq-dash" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+        </marker>
+        <marker id="sequence-sq-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#34d399"/>
+        </marker>
+      </defs>
 
-  <!-- Title & Eyebrow -->
-  <text x="48" y="40" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="11" font-weight="700" fill="#38bdf8" letter-spacing="1.5">REMOTEY // EXECUTION LIFECYCLE</text>
-  <text x="48" y="66" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="20" font-weight="700" fill="#ffffff">Autonomous Computer-Use Loop Sequence</text>
+      <!-- Background -->
+      <rect width="1000" height="440" fill="#090d16"/>
 
-  <!-- Lifeline Columns -->
-  <!-- 1: AI Agent Brain -->
-  <line x1="140" y1="120" x2="140" y2="380" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
-  <rect x="50" y="86" width="180" height="34" rx="6" fill="#1e293b" stroke="#3b82f6" stroke-width="1.2"/>
-  <text x="140" y="108" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="12" font-weight="700" fill="#ffffff">AI Agent Brain</text>
+      <!-- Header -->
+      <text x="48" y="44" fill="#38bdf8" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.18em" font-weight="600">EXECUTION LIFECYCLE · REMOTEY</text>
+      <text x="48" y="72" fill="#ffffff" font-size="20" font-family="'Geist', sans-serif" font-weight="600" letter-spacing="-0.02em">Autonomous Computer-Use Loop Sequence</text>
 
-  <!-- 2: Remotey CLI -->
-  <line x1="380" y1="120" x2="380" y2="380" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
-  <rect x="290" y="86" width="180" height="34" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-  <text x="380" y="108" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="12" font-weight="700" fill="#ffffff">Remotey CLI / Skill</text>
+      <!-- Lifelines -->
+      <!-- 1: AI Agent Brain -->
+      <line x1="150" y1="124" x2="150" y2="400" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="60" y="94" width="180" height="30" rx="5" fill="#131b2e" stroke="#ffffff" stroke-width="1" stroke-opacity="0.15"/>
+      <text x="150" y="114" fill="#ffffff" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">AI Agent Brain</text>
 
-  <!-- 3: Encrypted Tailnet -->
-  <line x1="600" y1="120" x2="600" y2="380" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
-  <rect x="510" y="86" width="180" height="34" rx="6" fill="#0f2137" stroke="#0284c7" stroke-width="1.2"/>
-  <text x="600" y="108" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="12" font-weight="700" fill="#38bdf8">Tailscale Tunnel</text>
+      <!-- 2: Remotey CLI -->
+      <line x1="390" y1="124" x2="390" y2="400" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="300" y="94" width="180" height="30" rx="5" fill="#131b2e" stroke="#0284c7" stroke-width="1"/>
+      <text x="390" y="114" fill="#38bdf8" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Remotey CLI / Skill</text>
 
-  <!-- 4: Remote Host OS -->
-  <line x1="820" y1="120" x2="820" y2="380" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
-  <rect x="730" y="86" width="180" height="34" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-  <text x="820" y="108" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="12" font-weight="700" fill="#ffffff">Host OS / Hardware</text>
+      <!-- 3: Tailscale Tunnel -->
+      <line x1="620" y1="124" x2="620" y2="400" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="530" y="94" width="180" height="30" rx="5" fill="#0f2137" stroke="#0284c7" stroke-width="1" stroke-opacity="0.3"/>
+      <text x="620" y="114" fill="#94a3b8" font-size="11" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">Tailscale Mesh (7777)</text>
 
-  <!-- ================= SEQUENCE STEPS ================= -->
+      <!-- 4: Target OS Hardware -->
+      <line x1="850" y1="124" x2="850" y2="400" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+      <rect x="760" y="94" width="180" height="30" rx="5" fill="#131b2e" stroke="#ffffff" stroke-width="1" stroke-opacity="0.15"/>
+      <text x="850" y="114" fill="#ffffff" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Host OS / Hardware</text>
 
-  <!-- Step 1: Brain triggers screenshot -->
-  <line x1="140" y1="148" x2="380" y2="148" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#seq-arrow)"/>
-  <text x="260" y="142" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#ffffff">1. remotey screenshot</text>
+      <!-- Steps -->
+      <!-- 1: Request screen -->
+      <line x1="150" y1="150" x2="390" y2="150" stroke="#38bdf8" stroke-width="1.2" marker-end="url(#sequence-sq-arrow)"/>
+      <text x="270" y="144" fill="#ffffff" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">1. remotey screenshot</text>
 
-  <!-- Step 2: CLI routes over Tailscale to Host -->
-  <line x1="380" y1="176" x2="820" y2="176" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#seq-arrow)"/>
-  <text x="600" y="170" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#38bdf8">2. GET /screenshot (HTTP:7777)</text>
+      <!-- 2: Route request -->
+      <line x1="390" y1="180" x2="850" y2="180" stroke="#38bdf8" stroke-width="1.2" marker-end="url(#sequence-sq-arrow)"/>
+      <text x="620" y="174" fill="#38bdf8" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">2. GET /screenshot</text>
 
-  <!-- Step 3: Host captures and returns PNG -->
-  <line x1="820" y1="214" x2="380" y2="214" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#seq-dash)"/>
-  <text x="600" y="206" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#94a3b8">3. 200 OK (image/png, &lt;80ms)</text>
+      <!-- 3: Capture & Return -->
+      <line x1="850" y1="216" x2="390" y2="216" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#sequence-sq-dash)"/>
+      <text x="620" y="210" fill="#94a3b8" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">3. 200 OK (image/png, &lt;80ms)</text>
 
-  <!-- Step 4: CLI writes to /tmp and notifies Brain -->
-  <line x1="380" y1="242" x2="140" y2="242" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4 4" marker-end="url(#seq-dash)"/>
-  <text x="260" y="234" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="11" fill="#94a3b8">4. Vision buffer updated</text>
+      <!-- 4: Vision Buffer -->
+      <line x1="390" y1="246" x2="150" y2="246" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#sequence-sq-dash)"/>
+      <text x="270" y="240" fill="#94a3b8" font-size="10" font-family="'Geist', sans-serif" text-anchor="middle">4. Vision Buffer Updated</text>
 
-  <!-- Step 5: Self-Activation: LLM processes coordinates -->
-  <rect x="70" y="260" width="140" height="26" rx="4" fill="#0369a1" stroke="#38bdf8" stroke-width="1"/>
-  <text x="140" y="277" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="10" font-weight="700" fill="#ffffff">LLM identifies UI target (x, y)</text>
+      <!-- 5: Self Activation (LLM reasoning) -->
+      <rect x="80" y="266" width="140" height="24" rx="4" fill="#0369a1" stroke="#38bdf8" stroke-width="0.8"/>
+      <text x="150" y="282" fill="#ffffff" font-size="9" font-family="'Geist', sans-serif" font-weight="600" text-anchor="middle">LLM identifies UI target (x, y)</text>
 
-  <!-- Step 6: Brain triggers action -->
-  <line x1="140" y1="310" x2="380" y2="310" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#seq-arrow)"/>
-  <text x="260" y="304" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#ffffff">5. remotey click 500 300</text>
+      <!-- 6: Execute action -->
+      <line x1="150" y1="316" x2="390" y2="316" stroke="#38bdf8" stroke-width="1.2" marker-end="url(#sequence-sq-arrow)"/>
+      <text x="270" y="310" fill="#ffffff" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">5. remotey click 500 300</text>
 
-  <!-- Step 7: CLI executes hardware command -->
-  <line x1="380" y1="338" x2="820" y2="338" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#seq-arrow)"/>
-  <text x="600" y="332" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#38bdf8">6. POST /click {"x":500, "y":300}</text>
+      <!-- 7: Send action -->
+      <line x1="390" y1="346" x2="850" y2="346" stroke="#38bdf8" stroke-width="1.2" marker-end="url(#sequence-sq-arrow)"/>
+      <text x="620" y="340" fill="#38bdf8" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">6. POST /click {"x":500, "y":300}</text>
 
-  <!-- Step 8: Hardware simulated & confirmed -->
-  <line x1="820" y1="368" x2="140" y2="368" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#seq-dash)"/>
-  <text x="480" y="362" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#10b981">7. OK (mouse_event simulated) -> loop repeats</text>
-
-</svg>
+      <!-- 8: Hardware simulated -->
+      <line x1="850" y1="380" x2="150" y2="380" stroke="#34d399" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#sequence-sq-green)"/>
+      <text x="500" y="374" fill="#34d399" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">7. OK (mouse_event simulated) -> loop repeats</text>
+    </svg>

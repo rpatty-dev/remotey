@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/remotey.svg" alt="Remotey Banner" width="100%">
+  <img src="assets/remotey.png" alt="Remotey Banner" width="100%">
   <p><strong>Bi-Directional Autonomous Computer-Use for AI Agents (Antigravity, Claude, Cursor) connecting Mac ⟷ Windows</strong></p>
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -85,21 +85,46 @@ This installs the `remotey` skill into `~/.agents/skills/remotey` and `~/.claude
 
 ---
 
-## 1-Shot AI Agent Prompt (Copy & Paste)
+## 1-Shot AI Agent Prompts (Copy & Paste)
 
-You can install Remotey into any AI agent (Claude Code, Antigravity, Cursor, Windsurf, OpenDevin) by pasting this single prompt directly into the agent's chat:
+### For Mac / Linux Agents (Antigravity, Claude Code, Cursor)
+
+Paste this into your Mac agent prompt:
 
 ```markdown
-Install the Remotey computer-use skill from https://github.com/rpatty-dev/remotey so you can control my remote machine. 
+Install the Remotey computer-use skill from https://github.com/rpatty-dev/remotey so you can control my remote machine.
 
-To install:
-1. Clone https://github.com/rpatty-dev/remotey.git to /tmp/remotey-install
-2. Copy the skill folder /tmp/remotey-install/skills/remotey into your agent's active skills directory:
-   - For Antigravity: ~/.agents/skills/remotey
-   - For Claude: ~/.claude/skills/remotey
-   - For Cursor: ~/.cursor/skills/remotey
-3. Install the CLI binary globally or link /tmp/remotey-install/bin/remotey into /usr/local/bin/remotey
-4. Test by running `remotey --help` and verify the skill is registered.
+Run these setup commands:
+git clone https://github.com/rpatty-dev/remotey.git /tmp/remotey-install
+mkdir -p ~/.agents/skills/remotey ~/.claude/skills/remotey ~/.cursor/skills/remotey
+cp -r /tmp/remotey-install/skills/remotey/* ~/.agents/skills/remotey/
+cp -r /tmp/remotey-install/skills/remotey/* ~/.claude/skills/remotey/
+cp -r /tmp/remotey-install/skills/remotey/* ~/.cursor/skills/remotey/
+chmod +x /tmp/remotey-install/bin/remotey
+mkdir -p ~/.local/bin
+cp /tmp/remotey-install/bin/remotey ~/.local/bin/remotey
+echo "Remotey skill installed successfully. Ready to control remote host."
+```
+
+---
+
+### For Windows Agents (PowerShell / CMD)
+
+Paste this into your Windows agent prompt:
+
+```markdown
+Install the Remotey computer-use skill from https://github.com/rpatty-dev/remotey so you can control my remote machine.
+
+Run these PowerShell setup commands:
+git clone https://github.com/rpatty-dev/remotey.git "$env:TEMP\remotey-install"
+$skillsDir = "$HOME\.agents\skills\remotey"
+New-Item -ItemType Directory -Force -Path $skillsDir | Out-Null
+Copy-Item -Recurse -Force "$env:TEMP\remotey-install\skills\remotey\*" $skillsDir
+$binDir = "$HOME\.remotey\bin"
+New-Item -ItemType Directory -Force -Path $binDir | Out-Null
+Copy-Item "$env:TEMP\remotey-install\bin\remotey" "$binDir\remotey.js"
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";$binDir", "User")
+Write-Host "Remotey skill installed successfully on Windows."
 ```
 
 ---
@@ -127,7 +152,7 @@ To install:
 ## System Architecture
 
 <div align="center">
-  <img src="docs/diagrams/architecture.svg" alt="Remotey Architecture Topology" width="100%">
+  <img src="docs/diagrams/architecture.png" alt="Remotey Architecture Topology" width="100%">
 </div>
 
 ---
@@ -135,7 +160,7 @@ To install:
 ## Autonomous Execution Lifecycle
 
 <div align="center">
-  <img src="docs/diagrams/sequence.svg" alt="Remotey Sequence Diagram" width="100%">
+  <img src="docs/diagrams/sequence.png" alt="Remotey Sequence Diagram" width="100%">
 </div>
 
 ---

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remotey Architecture Topology</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #090d16;
+      --color-ink:     #f8fafc;
+      --color-muted:   #94a3b8;
+      --color-accent:  #0284c7;
+      --color-cyan:    #38bdf8;
+      --font-sans:     'Geist', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+    body {
+      background: var(--color-paper);
+      color: var(--color-ink);
+      font-family: var(--font-sans);
+      display: flex;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .frame { max-width: 1040px; width: 100%; }
+    svg { width: 100%; height: auto; display: block; border-radius: 12px; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="architecture-remotey-title architecture-remotey-desc">
+      <title id="architecture-remotey-title">Remotey System Architecture</title>
+      <desc id="architecture-remotey-desc">Bi-directional autonomous computer use architecture connecting Mac and Windows across WireGuard Tailscale</desc>
+
+      <defs>
+        <pattern id="dot-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.06)"/>
+        </pattern>
+        <marker id="m-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+        </marker>
+        <marker id="m-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#38bdf8"/>
+        </marker>
+        <marker id="m-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#34d399"/>
+        </marker>
+      </defs>
+
+      <!-- Background Canvas -->
+      <rect width="1000" height="480" fill="#090d16"/>
+      <rect width="1000" height="480" fill="url(#dot-grid)"/>
+
+      <!-- Header -->
+      <text x="48" y="44" fill="#38bdf8" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.18em" font-weight="600">SYSTEM TOPOLOGY · REMOTEY</text>
+      <text x="48" y="72" fill="#ffffff" font-size="20" font-family="'Geist', sans-serif" font-weight="600" letter-spacing="-0.02em">Bi-Directional Autonomous Computer-Use Bridge</text>
+
+      <!-- Zone 1: Node A (Client / Brain) -->
+      <rect x="48" y="104" width="276" height="328" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.10)" stroke-width="0.8"/>
+      <rect x="64" y="98" width="132" height="14" rx="2" fill="#090d16"/>
+      <text x="130" y="108" fill="#94a3b8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">NODE A · CLIENT (BRAIN)</text>
+
+      <!-- Zone 2: Encrypted Mesh Transport -->
+      <rect x="364" y="104" width="272" height="328" rx="8" fill="rgba(2,132,199,0.04)" stroke="rgba(2,132,199,0.25)" stroke-width="0.8"/>
+      <rect x="380" y="98" width="144" height="14" rx="2" fill="#090d16"/>
+      <text x="452" y="108" fill="#38bdf8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">ENCRYPTED TRANSPORT LAYER</text>
+
+      <!-- Zone 3: Node B (Remote Target) -->
+      <rect x="676" y="104" width="276" height="328" rx="8" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.10)" stroke-width="0.8"/>
+      <rect x="692" y="98" width="138" height="14" rx="2" fill="#090d16"/>
+      <text x="761" y="108" fill="#94a3b8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">NODE B · REMOTE TARGET</text>
+
+      <!-- Connectors (Drawn before nodes for correct z-index) -->
+      <!-- Forward Command Stream: CLI -> Tailscale -> Host Server -->
+      <path d="M 276 270 H 420 Q 428 270 428 270 V 270 H 720" fill="none" stroke="#38bdf8" stroke-width="1.4" marker-end="url(#m-accent)"/>
+      <rect x="466" y="260" width="70" height="14" rx="3" fill="#090d16" stroke="rgba(56,189,248,0.3)" stroke-width="0.8"/>
+      <text x="501" y="270" fill="#38bdf8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">POST /action</text>
+
+      <!-- Reverse Vision Stream: Target Screen -> Tailscale -> Vision Buffer -->
+      <path d="M 720 348 H 580 Q 572 348 572 348 V 348 H 276" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#m-arrow)"/>
+      <rect x="456" y="338" width="90" height="14" rx="3" fill="#090d16" stroke="rgba(148,163,184,0.3)" stroke-width="0.8"/>
+      <text x="501" y="348" fill="#94a3b8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PNG &lt;80ms VISION</text>
+
+      <!-- Internal Node A Connections -->
+      <line x1="186" y1="192" x2="186" y2="236" stroke="#475569" stroke-width="1" marker-end="url(#m-arrow)"/>
+      <line x1="186" y1="304" x2="186" y2="330" stroke="#475569" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#m-arrow)"/>
+
+      <!-- Internal Node B Connections -->
+      <line x1="814" y1="304" x2="814" y2="330" stroke="#475569" stroke-width="1" marker-end="url(#m-arrow)"/>
+
+      <!-- ================= NODES ================= -->
+
+      <!-- Node A1: AI Agent Brain -->
+      <rect x="72" y="132" width="228" height="60" rx="6" fill="#131b2e" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+      <rect x="80" y="140" width="36" height="12" rx="2" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+      <text x="98" y="149" fill="#94a3b8" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle">LLM</text>
+      <text x="186" y="157" fill="#ffffff" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">AI Agent Brain</text>
+      <text x="186" y="174" fill="#94a3b8" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Antigravity · Claude · Cursor</text>
+
+      <!-- Node A2: Remotey CLI (Accent / Focal) -->
+      <rect x="72" y="236" width="228" height="68" rx="6" fill="#131b2e" stroke="#0284c7" stroke-width="1.2"/>
+      <rect x="80" y="244" width="30" height="12" rx="2" fill="rgba(2,132,199,0.15)" stroke="#0284c7" stroke-width="0.8"/>
+      <text x="95" y="253" fill="#38bdf8" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle">CLI</text>
+      <text x="186" y="262" fill="#ffffff" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Remotey Client / Skill</text>
+      <text x="186" y="278" fill="#38bdf8" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">npx remotey &lt;click|type|run&gt;</text>
+      <text x="186" y="292" fill="#64748b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Zero dependency client</text>
+
+      <!-- Node A3: Vision Buffer -->
+      <rect x="72" y="330" width="228" height="68" rx="6" fill="#0b1120" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+      <rect x="80" y="338" width="36" height="12" rx="2" fill="transparent" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+      <text x="98" y="347" fill="#94a3b8" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle">LOCAL</text>
+      <text x="186" y="357" fill="#ffffff" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Local Vision Buffer</text>
+      <text x="186" y="373" fill="#94a3b8" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">/tmp/remotey_screen.png</text>
+      <text x="186" y="386" fill="#64748b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Piped to Multimodal Vision</text>
+
+      <!-- Zone 2: Transport Nodes -->
+      <rect x="388" y="148" width="224" height="64" rx="6" fill="#0f2137" stroke="rgba(2,132,199,0.3)" stroke-width="1"/>
+      <text x="500" y="172" fill="#ffffff" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tailscale Mesh Network</text>
+      <text x="500" y="188" fill="#38bdf8" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">100.x.y.z:7777 (WireGuard)</text>
+      <text x="500" y="201" fill="#94a3b8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">Encrypted Point-to-Point</text>
+
+      <!-- Port & Security Badge -->
+      <rect x="424" y="222" width="152" height="24" rx="4" fill="#090d16" stroke="rgba(255,255,255,0.10)" stroke-width="0.8"/>
+      <text x="500" y="237" fill="#94a3b8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">FIREWALL: TCP 7777 ONLY</text>
+
+      <rect x="388" y="376" width="224" height="26" rx="4" fill="#090d16" stroke="rgba(255,255,255,0.08)" stroke-width="0.8"/>
+      <text x="500" y="392" fill="#38bdf8" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">SYMMETRIC: MAC ⟷ WINDOWS</text>
+
+      <!-- Node B1: Remote Target Server (Focal Accent) -->
+      <rect x="700" y="236" width="228" height="68" rx="6" fill="#131b2e" stroke="#0284c7" stroke-width="1.2"/>
+      <rect x="708" y="244" width="44" height="12" rx="2" fill="rgba(2,132,199,0.15)" stroke="#0284c7" stroke-width="0.8"/>
+      <text x="730" y="253" fill="#38bdf8" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle">DAEMON</text>
+      <text x="814" y="262" fill="#ffffff" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Remotey Agent Server</text>
+      <text x="814" y="278" fill="#38bdf8" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">0.0.0.0:7777 (TcpListener)</text>
+      <text x="814" y="292" fill="#94a3b8" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">PowerShell 5.1+ / Python 3</text>
+
+      <!-- Node B2: Hardware Drivers -->
+      <rect x="700" y="330" width="228" height="68" rx="6" fill="#0b1120" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+      <rect x="708" y="338" width="44" height="12" rx="2" fill="transparent" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+      <text x="730" y="347" fill="#94a3b8" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle">SYSTEM</text>
+      <text x="814" y="357" fill="#ffffff" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">OS Hardware Simulation</text>
+      <text x="814" y="373" fill="#94a3b8" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">user32.dll / CoreGraphics</text>
+      <text x="814" y="386" fill="#64748b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">mouse_event · SendKeys · Screencapture</text>
+    </svg>
+  </div>
+</body>
+</html>

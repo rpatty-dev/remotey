@@ -3,7 +3,7 @@ name: remotey
 description: "Remotey Computer-Use & Remote Work PC Automation Skill. Enables AI agents (Antigravity, Claude, Cursor, OpenDevin) to act as the autonomous brain controlling a remote Windows desktop over Tailscale or local network. Provides capabilities to capture live desktop screenshots, click exact UI coordinates, move the mouse, type text, trigger hotkeys, scroll, and execute PowerShell/CMD commands on the remote Windows desktop."
 ---
 
-# Remotey Computer-Use Skill 🖥️
+# Remotey Computer-Use Skill ️
 
 Connect your AI Agent (Antigravity, Claude, Cursor) as the autonomous "Brain" controlling a remote Windows PC.
 

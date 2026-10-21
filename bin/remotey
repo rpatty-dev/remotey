@@ -170,7 +170,7 @@ function installSkill() {
 async function runInteractiveSetup() {
   console.log(`
 ======================================================
-  🖥️  Remotey Multi-Agent Setup & Auto-Discovery
+  ️  Remotey Multi-Agent Setup & Auto-Discovery
 ======================================================
 `);
 
@@ -191,12 +191,12 @@ async function runInteractiveSetup() {
   const curConfig = fs.existsSync(userConfigPath) ? JSON.parse(fs.readFileSync(userConfigPath, 'utf8')) : {};
   curConfig.target = formattedTarget;
   fs.writeFileSync(userConfigPath, JSON.stringify(curConfig, null, 2));
-  console.log(`   ✓ Target saved: ${formattedTarget}\n`);
+  console.log(`    Target saved: ${formattedTarget}\n`);
 
   console.log('2. Auto-detecting and Installing Skills into AI Agents:');
   const installed = installSkill();
   installed.forEach((item) => {
-    console.log(`   ✓ Installed skill for ${item.name}:`);
+    console.log(`    Installed skill for ${item.name}:`);
     console.log(`     -> ${item.path}`);
   });
 
@@ -206,18 +206,18 @@ async function runInteractiveSetup() {
     const res = await fetch(`${formattedTarget}/status`, { signal: AbortSignal.timeout(2500) });
     if (res.ok) {
       const data = await res.json();
-      console.log(`   ✓ SUCCESS: Connected to Windows PC (${data.width}x${data.height}, Active: "${data.activeWindow}")`);
+      console.log(`    SUCCESS: Connected to Windows PC (${data.width}x${data.height}, Active: "${data.activeWindow}")`);
     } else {
-      console.log(`   ⚠️ Host responded with HTTP ${res.status}. Ensure Remotey server is running on Windows.`);
+      console.log(`   ️ Host responded with HTTP ${res.status}. Ensure Remotey server is running on Windows.`);
     }
   } catch (err) {
-    console.log(`   ⚠️ Could not reach ${formattedTarget} (${err.message}).`);
+    console.log(`   ️ Could not reach ${formattedTarget} (${err.message}).`);
     console.log(`      Make sure START.bat is running on Windows and ESET/antivirus firewall is unblocking port 7777.`);
   }
 
   console.log(`
 ======================================================
-  🚀 Setup Complete!
+   Setup Complete!
   
   Test anytime:
     npx remotey status
@@ -253,7 +253,7 @@ if (require.main === module) {
         await runInteractiveSetup();
       } else if (cmd === 'status' || cmd === 'info') {
         const info = await getStatus();
-        console.log(`✓ Connected to Remotey Agent at ${TARGET}`);
+        console.log(` Connected to Remotey Agent at ${TARGET}`);
         console.log(`  Screen: ${info.width}x${info.height}`);
         console.log(`  Cursor: (${info.cursorX}, ${info.cursorY})`);
         console.log(`  Active Window: "${info.activeWindow || 'Desktop'}"`);
@@ -261,46 +261,46 @@ if (require.main === module) {
       } else if (cmd === 'screenshot' || cmd === 'shot' || cmd === 'screen') {
         const targetPath = args[1];
         const res = await getScreenshot(targetPath);
-        console.log(`✓ Screenshot captured: ${res.path} (${Math.round(res.bytes / 1024)} KB)`);
+        console.log(` Screenshot captured: ${res.path} (${Math.round(res.bytes / 1024)} KB)`);
       } else if (cmd === 'click') {
         const x = args[1], y = args[2], btn = args[3] || 'left';
         if (!x || !y) throw new Error('Usage: remotey click <x> <y> [button]');
         const r = await click(x, y, btn);
-        console.log(`✓ Clicked at (${r.x}, ${r.y}) [${r.button}]`);
+        console.log(` Clicked at (${r.x}, ${r.y}) [${r.button}]`);
       } else if (cmd === 'dblclick') {
         const x = args[1], y = args[2];
         if (!x || !y) throw new Error('Usage: remotey dblclick <x> <y>');
         const r = await click(x, y, 'left', 2);
-        console.log(`✓ Double-clicked at (${r.x}, ${r.y})`);
+        console.log(` Double-clicked at (${r.x}, ${r.y})`);
       } else if (cmd === 'rightclick') {
         const x = args[1], y = args[2];
         if (!x || !y) throw new Error('Usage: remotey rightclick <x> <y>');
         const r = await click(x, y, 'right', 1);
-        console.log(`✓ Right-clicked at (${r.x}, ${r.y})`);
+        console.log(` Right-clicked at (${r.x}, ${r.y})`);
       } else if (cmd === 'move') {
         const x = args[1], y = args[2];
         if (!x || !y) throw new Error('Usage: remotey move <x> <y>');
         const r = await move(x, y);
-        console.log(`✓ Cursor moved to (${r.x}, ${r.y})`);
+        console.log(` Cursor moved to (${r.x}, ${r.y})`);
       } else if (cmd === 'type') {
         const text = args.slice(1).join(' ');
         if (!text) throw new Error('Usage: remotey type "<text>"');
         const r = await typeText(text);
-        console.log(`✓ Typed: "${r.typed}"`);
+        console.log(` Typed: "${r.typed}"`);
       } else if (cmd === 'key' || cmd === 'press') {
         const key = args[1];
         if (!key) throw new Error('Usage: remotey key <keyName> (e.g. enter, tab, esc, backspace)');
         const r = await sendKey(key);
-        console.log(`✓ Sent key: ${r.keySent}`);
+        console.log(` Sent key: ${r.keySent}`);
       } else if (cmd === 'hotkey') {
         const combo = args[1];
         if (!combo) throw new Error('Usage: remotey hotkey <combo> (e.g. ctrl+c, alt+tab, win+r)');
         const r = await sendHotkey(combo);
-        console.log(`✓ Sent hotkey: ${r.keySent}`);
+        console.log(` Sent hotkey: ${r.keySent}`);
       } else if (cmd === 'scroll') {
         const amount = args[1] || -200;
         const r = await scroll(amount);
-        console.log(`✓ Scrolled: ${r.scrolled}`);
+        console.log(` Scrolled: ${r.scrolled}`);
       } else if (cmd === 'run') {
         const command = args.slice(1).join(' ');
         if (!command) throw new Error('Usage: remotey run "<powershell command>"');
@@ -310,7 +310,7 @@ if (require.main === module) {
         process.exit(r.exitCode || 0);
       } else if (cmd === 'install-skill') {
         const installed = installSkill();
-        console.log(`✓ Remotey skill auto-detected and installed to:`);
+        console.log(` Remotey skill auto-detected and installed to:`);
         installed.forEach(p => console.log(`  - ${p.name}: ${p.path}`));
         console.log(`\nYour AI agents (Antigravity, Claude, Cursor) now have Remotey computer-use capability.`);
       } else if (cmd === 'set-target') {
@@ -320,9 +320,9 @@ if (require.main === module) {
         const cur = fs.existsSync(userConfigPath) ? JSON.parse(fs.readFileSync(userConfigPath, 'utf8')) : {};
         cur.target = newTarget;
         fs.writeFileSync(userConfigPath, JSON.stringify(cur, null, 2));
-        console.log(`✓ Updated Remotey target to: ${newTarget}`);
+        console.log(` Updated Remotey target to: ${newTarget}`);
       } else {
-        console.log(`Remotey 🖥️  - Autonomous Computer-Use for AI Agents
+        console.log(`Remotey ️  - Autonomous Computer-Use for AI Agents
 Target: ${TARGET}
 
 Usage:
@@ -346,7 +346,7 @@ Environment Variables:
 `);
       }
     } catch (err) {
-      console.error(`✗ Remotey Error: ${err.message}`);
+      console.error(` Remotey Error: ${err.message}`);
       process.exit(1);
     }
   })();

@@ -10,7 +10,7 @@
 
 ---
 
-## ⚡ What is Remotey?
+## What is Remotey?
 
 **Remotey** is a bi-directional computer-use bridge for autonomous AI agents (Google Antigravity, Claude Desktop, Cursor, OpenDevin).
 
@@ -25,18 +25,18 @@ It allows an AI agent on **Mac to control Windows**, OR an AI agent on **Windows
 └────────────────────────┘                               └────────────────────────┘
 ```
 
-- 🔄 **Works Both Ways**: Control a remote Windows PC from Mac, or control a remote Mac from Windows.
-- 📸 **High-Speed Vision**: Captures screens in `<100ms` and pipes them directly to multimodal LLMs.
-- 🖱️ **Native Hardware Simulation**: Direct OS-level mouse clicks, moves, right clicks, scrolls, and drag-and-drop.
-- ⌨️ **Keyboard Simulation**: Native keystrokes, modifiers, and shortcuts (`Cmd+Space`, `Win+R`, `Ctrl+C`).
-- ⚡ **Zero Bloat**:
+- **Works Both Ways**: Control a remote Windows PC from Mac, or control a remote Mac from Windows.
+- **High-Speed Vision**: Captures screens in `<100ms` and pipes them directly to multimodal LLMs.
+- **Native Hardware Simulation**: Direct OS-level mouse clicks, moves, right clicks, scrolls, and drag-and-drop.
+- **Keyboard Simulation**: Native keystrokes, modifiers, and shortcuts (`Cmd+Space`, `Win+R`, `Ctrl+C`).
+- **Zero Bloat**:
   - Windows: Pure PowerShell 5.1+ & .NET Framework.
   - macOS: Pure Python 3 & CoreGraphics. No heavy browser automation or Electron wrappers.
-- 🔒 **End-to-End Encrypted**: Connects over private Tailscale mesh or local LAN with zero open public ports.
+- **End-to-End Encrypted**: Connects over private Tailscale mesh or local LAN with zero open public ports.
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 ### Option A: If your Target is Windows (Control Windows from Mac)
 
@@ -85,7 +85,7 @@ This installs the `remotey` skill into `~/.agents/skills/remotey` and `~/.claude
 
 ---
 
-## 🛠️ CLI Reference
+## CLI Reference
 
 | Command | Arguments | Description |
 |---|---|---|
@@ -105,22 +105,23 @@ This installs the `remotey` skill into `~/.agents/skills/remotey` and `~/.claude
 
 ---
 
-## 🧠 Autonomous Computer-Use Loop
+## System Architecture
 
-When an AI Agent is asked to accomplish a desktop task:
-
-```
-┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐
-│ 1. Screenshot   │ ───>  │ 2. Vision Model │ ───>  │ 3. Execute      │
-│ remotey shot    │       │ locate buttons  │       │ remotey click   │
-└─────────────────┘       └─────────────────┘       └─────────────────┘
-         ▲                                                   │
-         └────────────────── 4. Verify ──────────────────────┘
-```
+<div align="center">
+  <img src="docs/diagrams/architecture.svg" alt="Remotey Architecture Topology" width="100%">
+</div>
 
 ---
 
-## 🛡️ Security & Architecture
+## Autonomous Execution Lifecycle
+
+<div align="center">
+  <img src="docs/diagrams/sequence.svg" alt="Remotey Sequence Diagram" width="100%">
+</div>
+
+---
+
+## Security & Architecture
 
 - **No Public Cloud Relay**: Direct peer-to-peer over WireGuard/Tailscale.
 - **Firewall Guard**: Restricts listening exclusively to the specified local port.
@@ -128,13 +129,13 @@ When an AI Agent is asked to accomplish a desktop task:
 
 ---
 
-## 🤝 Credits & Acknowledgements
+## Credits & Acknowledgements
 
 - Created and maintained by [**rpatty-dev**](https://github.com/rpatty-dev)
 - Built with help from [**nitech**](https://nitech.dev)
 
 ---
 
-## 📄 License
+## License
 
 MIT © [rpatty-dev](https://github.com/rpatty-dev)

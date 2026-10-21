@@ -4,7 +4,7 @@
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "=========================================================="
-echo " 🚀 Remotey macOS Server Launcher"
+echo "  Remotey macOS Server Launcher"
 echo "=========================================================="
 echo ""
 

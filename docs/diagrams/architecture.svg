@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="100%" height="100%" fill="none">
+  <!-- Style Tokens: Editorial Dark System (Style Guide: Paper #090D16, Card #131B2E, Ink #FFFFFF, Muted #94A3B8, Accent #0284C7, Cyan #38BDF8) -->
+  <defs>
+    <!-- Arrow Markers -->
+    <marker id="arrow-solid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrow-dashed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="480" fill="#090d16"/>
+
+  <!-- Subtle Blueprint Grid -->
+  <g opacity="0.05" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="60" x2="960" y2="60"/>
+    <line x1="0" y1="120" x2="960" y2="120"/>
+    <line x1="0" y1="180" x2="960" y2="180"/>
+    <line x1="0" y1="240" x2="960" y2="240"/>
+    <line x1="0" y1="300" x2="960" y2="300"/>
+    <line x1="0" y1="360" x2="960" y2="360"/>
+    <line x1="0" y1="420" x2="960" y2="420"/>
+    <line x1="160" y1="0" x2="160" y2="480"/>
+    <line x1="320" y1="0" x2="320" y2="480"/>
+    <line x1="480" y1="0" x2="480" y2="480"/>
+    <line x1="640" y1="0" x2="640" y2="480"/>
+    <line x1="800" y1="0" x2="800" y2="480"/>
+  </g>
+
+  <!-- Title & Eyebrow -->
+  <text x="48" y="44" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="11" font-weight="700" fill="#38bdf8" letter-spacing="1.5">REMOTEY // SYSTEM TOPOLOGY</text>
+  <text x="48" y="72" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="22" font-weight="700" fill="#ffffff">Bi-Directional Computer-Use Architecture</text>
+
+  <!-- ================= ZONES ================= -->
+  <!-- Left Zone: Node A -->
+  <rect x="48" y="100" width="280" height="330" rx="12" fill="#0f172a" fill-opacity="0.6" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+  <rect x="64" y="92" width="130" height="18" rx="4" fill="#090d16"/>
+  <text x="72" y="105" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="1">CLIENT / BRAIN (NODE A)</text>
+
+  <!-- Middle Zone: Encrypted Tailnet Transport -->
+  <rect x="360" y="100" width="240" height="330" rx="12" fill="#03162b" fill-opacity="0.4" stroke="#0284c7" stroke-width="1"/>
+  <rect x="376" y="92" width="140" height="18" rx="4" fill="#090d16"/>
+  <text x="384" y="105" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="11" font-weight="700" fill="#38bdf8" letter-spacing="1">WIRE / TRANSPORT LAYER</text>
+
+  <!-- Right Zone: Node B -->
+  <rect x="632" y="100" width="280" height="330" rx="12" fill="#0f172a" fill-opacity="0.6" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+  <rect x="648" y="92" width="130" height="18" rx="4" fill="#090d16"/>
+  <text x="656" y="105" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="1">REMOTE HOST (NODE B)</text>
+
+  <!-- ================= CONNECTIONS (Z-ORDER: BEHIND NODES) ================= -->
+  <!-- Solid Command Stream: Node A (CLI) -> Tailscale -> Host TCP Listener -->
+  <path d="M 288 230 H 340 Q 348 230 348 230 V 230 H 672" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrow-solid)"/>
+  
+  <!-- Dashed Vision Stream: Host Vision -> Tailscale -> Client Vision Engine -->
+  <path d="M 672 340 H 620 Q 612 340 612 340 V 340 H 288" fill="none" stroke="#64748b" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#arrow-dashed)"/>
+
+  <!-- ================= NODES ================= -->
+
+  <!-- NODE A1: AI Agent Brain -->
+  <g transform="translate(68, 126)">
+    <rect width="240" height="70" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.2"/>
+    <text x="16" y="28" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="14" font-weight="700" fill="#ffffff">AI Agent Brain</text>
+    <text x="16" y="46" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="11" fill="#94a3b8">Antigravity · Claude · Cursor</text>
+    <text x="16" y="59" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="10" fill="#38bdf8">Multimodal Vision &amp; Policy Decision</text>
+  </g>
+
+  <!-- Connector A1 -> A2 -->
+  <line x1="188" y1="196" x2="188" y2="216" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow-solid)"/>
+
+  <!-- NODE A2: Remotey CLI / Skill -->
+  <g transform="translate(68, 216)">
+    <rect width="220" height="80" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="16" y="26" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Remotey Client / Skill</text>
+    <text x="16" y="44" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="11" fill="#94a3b8">npx remotey &lt;cmd&gt;</text>
+    <text x="16" y="62" font-family="ui-monospace, monospace" font-size="10" fill="#38bdf8">POST /click /type /run</text>
+  </g>
+
+  <!-- NODE A3: Local Vision Buffer -->
+  <g transform="translate(68, 316)">
+    <rect width="220" height="74" rx="8" fill="#131b2e" stroke="#334155" stroke-width="1"/>
+    <text x="16" y="26" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Vision Buffer</text>
+    <text x="16" y="44" font-family="ui-monospace, monospace" font-size="11" fill="#94a3b8">/tmp/remotey_screen.png</text>
+    <text x="16" y="60" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="10" fill="#64748b">&lt;100ms Screen Latency</text>
+  </g>
+
+  <!-- TRANSPORT NODES -->
+  <g transform="translate(380, 150)">
+    <!-- Encrypted Mesh WireGuard -->
+    <rect width="200" height="66" rx="8" fill="#0f2137" stroke="#0284c7" stroke-width="1.2"/>
+    <text x="16" y="26" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Tailscale Mesh (WireGuard)</text>
+    <text x="16" y="44" font-family="ui-monospace, monospace" font-size="11" fill="#38bdf8">100.x.y.z:7777</text>
+    <text x="16" y="58" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="10" fill="#94a3b8">End-to-End P2P Encrypted</text>
+  </g>
+
+  <g transform="translate(380, 240)">
+    <!-- Protocol Badge -->
+    <rect width="200" height="50" rx="8" fill="#090d16" stroke="#1e293b" stroke-width="1"/>
+    <text x="16" y="22" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="11" font-weight="700" fill="#94a3b8">PAYLOAD PROTOCOL</text>
+    <text x="16" y="38" font-family="ui-monospace, monospace" font-size="11" fill="#38bdf8">HTTP 1.1 + JSON / PNG</text>
+  </g>
+
+  <g transform="translate(380, 314)">
+    <!-- Bi-Directional Note -->
+    <rect width="200" height="50" rx="8" fill="#090d16" stroke="#1e293b" stroke-width="1"/>
+    <text x="16" y="22" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="11" font-weight="700" fill="#94a3b8">SYMMETRIC PROTOCOL</text>
+    <text x="16" y="38" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="11" fill="#ffffff">Mac ⟷ Windows</text>
+  </g>
+
+  <!-- NODE B1: Host OS Hardware & Win32/CoreGraphics -->
+  <g transform="translate(672, 126)">
+    <rect width="220" height="70" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="16" y="26" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Target OS Display</text>
+    <text x="16" y="44" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="11" fill="#94a3b8">Dual Monitor / Retina Display</text>
+    <text x="16" y="58" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="10" fill="#38bdf8">Active Window &amp; Coordinate Space</text>
+  </g>
+
+  <!-- Connector B2 -> B1 -->
+  <line x1="782" y1="216" x2="782" y2="196" stroke="#475569" stroke-width="1.2" marker-end="url(#arrow-solid)"/>
+
+  <!-- NODE B2: Raw TCP Listener -->
+  <g transform="translate(672, 216)">
+    <rect width="220" height="80" rx="8" fill="#0f2537" stroke="#0284c7" stroke-width="1.5"/>
+    <text x="16" y="26" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Remotey Agent Daemon</text>
+    <text x="16" y="44" font-family="ui-monospace, monospace" font-size="11" fill="#38bdf8">TcpListener:7777</text>
+    <text x="16" y="62" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="10" fill="#94a3b8">Pure PowerShell / Python 3</text>
+  </g>
+
+  <!-- NODE B3: Hardware Simulator -->
+  <g transform="translate(672, 316)">
+    <rect width="220" height="74" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="16" y="26" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="13" font-weight="700" fill="#ffffff">Hardware Drivers</text>
+    <text x="16" y="44" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="11" fill="#94a3b8">user32.dll / CoreGraphics</text>
+    <text x="16" y="60" font-family="ui-monospace, monospace" font-size="10" fill="#38bdf8">mouse_event · SendKeys · Screencapture</text>
+  </g>
+
+</svg>

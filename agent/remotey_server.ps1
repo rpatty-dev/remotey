@@ -1,4 +1,4 @@
-# Remotey Server for Windows 🖥️
+# Remotey Server for Windows ️
 # Zero-dependency, native PowerShell TCP server for autonomous agent computer-use.
 
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
@@ -29,7 +29,7 @@ try {
 } catch {}
 
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host " 🚀 Remotey Computer-Use Server Starting..." -ForegroundColor Cyan
+Write-Host "  Remotey Computer-Use Server Starting..." -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
 
 # Bind to 0.0.0.0 (all network interfaces, including Tailscale, LAN, and Loopback)

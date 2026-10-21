@@ -283,7 +283,7 @@ class RemoteyHandler(http.server.BaseHTTPRequestHandler):
 def run_server():
     server = http.server.ThreadingHTTPServer(("0.0.0.0", PORT), RemoteyHandler)
     print("==========================================================")
-    print(f" 🚀 Remotey macOS Agent Starting on port {PORT}...")
+    print(f"  Remotey macOS Agent Starting on port {PORT}...")
     print("==========================================================")
     print(f"[SUCCESS] Listening on 0.0.0.0:{PORT} (ALL INTERFACES)")
     print("Ready for autonomous commands from Windows / Remote PC!\n")

@@ -1,0 +1,43 @@
+{
+  "name": "remotey",
+  "version": "1.0.0",
+  "description": "Autonomous Computer-Use & Remote Desktop Control for AI Agents (Antigravity, Claude, Cursor) connecting Mac to Windows",
+  "main": "bin/remotey",
+  "bin": {
+    "remotey": "./bin/remotey"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "computer-use",
+    "remote-desktop",
+    "antigravity",
+    "claude",
+    "cursor",
+    "automation",
+    "tailscale",
+    "windows",
+    "macos"
+  ],
+  "author": "rpatty-dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rpatty-dev/remotey.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rpatty-dev/remotey/issues"
+  },
+  "homepage": "https://github.com/rpatty-dev/remotey#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin",
+    "agent",
+    "skills",
+    "assets",
+    "README.md",
+    "LICENSE"
+  ]
+}

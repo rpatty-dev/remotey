@@ -1,0 +1,258 @@
+#!/usr/bin/env node
+
+/**
+ * Remotey CLI & Computer-Use Client
+ * Connects AI agents (Claude, Antigravity, Cursor, etc.) to a remote Windows Work PC.
+ */
+
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+
+// Config discovery: ENV > local config.json > ~/.remotey/config.json > default
+const userConfigDir = path.join(os.homedir(), '.remotey');
+const userConfigPath = path.join(userConfigDir, 'config.json');
+const localConfigPath = path.join(__dirname, '..', 'config.json');
+
+let config = { 
+  target: 'http://127.0.0.1:7777', 
+  defaultScreenshotPath: '/tmp/remotey_screen.png',
+  timeoutMs: 4000
+};
+
+if (fs.existsSync(userConfigPath)) {
+  try { Object.assign(config, JSON.parse(fs.readFileSync(userConfigPath, 'utf8'))); } catch {}
+} else if (fs.existsSync(localConfigPath)) {
+  try { Object.assign(config, JSON.parse(fs.readFileSync(localConfigPath, 'utf8'))); } catch {}
+}
+
+const TARGET = (process.env.REMOTEY_TARGET || config.target || 'http://127.0.0.1:7777').replace(/\/$/, '');
+
+async function request(endpoint, method = 'GET', body = null) {
+  const url = `${TARGET}${endpoint}`;
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    signal: AbortSignal.timeout(config.timeoutMs || 4000)
+  };
+  if (body) opts.body = JSON.stringify(body);
+
+  const res = await fetch(url, opts);
+  if (!res.ok) {
+    const errText = await res.text().catch(() => '');
+    throw new Error(`Remotey Agent HTTP ${res.status}: ${errText || res.statusText}`);
+  }
+  return res;
+}
+
+async function getStatus() {
+  const res = await request('/status');
+  return await res.json();
+}
+
+async function getScreenshot(destPath = null) {
+  const savePath = destPath || config.defaultScreenshotPath || '/tmp/remotey_screen.png';
+  const res = await request('/screenshot');
+  const arrayBuffer = await res.arrayBuffer();
+  fs.mkdirSync(path.dirname(savePath), { recursive: true });
+  fs.writeFileSync(savePath, Buffer.from(arrayBuffer));
+  return { path: savePath, bytes: arrayBuffer.byteLength };
+}
+
+async function click(x, y, button = 'left', count = 1) {
+  const nx = parseInt(x, 10);
+  const ny = parseInt(y, 10);
+  const res = await request('/click', 'POST', { x: nx, y: ny, button, count: parseInt(count, 10) });
+  const data = await res.json();
+  return { ...data, x: nx, y: ny, button };
+}
+
+async function move(x, y) {
+  const nx = parseInt(x, 10);
+  const ny = parseInt(y, 10);
+  const res = await request('/move', 'POST', { x: nx, y: ny });
+  const data = await res.json();
+  return { ...data, x: nx, y: ny };
+}
+
+async function typeText(text) {
+  const res = await request('/type', 'POST', { text });
+  const data = await res.json();
+  return { ...data, typed: text };
+}
+
+async function sendKey(key) {
+  const res = await request('/key', 'POST', { key });
+  const data = await res.json();
+  return { ...data, keySent: key };
+}
+
+async function sendHotkey(keys) {
+  const res = await request('/hotkey', 'POST', { keys });
+  const data = await res.json();
+  return { ...data, keySent: keys };
+}
+
+async function scroll(amount = -200) {
+  const res = await request('/scroll', 'POST', { amount: parseInt(amount, 10) });
+  const data = await res.json();
+  return { ...data, scrolled: amount };
+}
+
+async function runCommand(command) {
+  const res = await request('/run', 'POST', { command });
+  return await res.json();
+}
+
+function installSkill(targetAgent = 'all') {
+  const homedir = os.homedir();
+  const skillSource = path.join(__dirname, '..', 'skills', 'remotey');
+  const installedPaths = [];
+
+  // Antigravity skills directory
+  const antigravityDir = path.join(homedir, '.agents', 'skills', 'remotey');
+  // Claude Desktop / MCP directory
+  const claudeSkillsDir = path.join(homedir, '.claude', 'skills', 'remotey');
+  // Cursor skills directory
+  const cursorSkillsDir = path.join(homedir, '.cursor', 'skills', 'remotey');
+
+  const targets = [];
+  if (targetAgent === 'all' || targetAgent === 'antigravity') targets.push(antigravityDir);
+  if (targetAgent === 'all' || targetAgent === 'claude') targets.push(claudeSkillsDir);
+  if (targetAgent === 'all' || targetAgent === 'cursor') targets.push(cursorSkillsDir);
+
+  for (const t of targets) {
+    fs.mkdirSync(path.dirname(t), { recursive: true });
+    // Copy skill files
+    fs.cpSync(skillSource, t, { recursive: true });
+    installedPaths.push(t);
+  }
+
+  return installedPaths;
+}
+
+module.exports = {
+  TARGET,
+  getStatus,
+  getScreenshot,
+  click,
+  move,
+  typeText,
+  sendKey,
+  sendHotkey,
+  scroll,
+  runCommand,
+  installSkill
+};
+
+// CLI Execution
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  const cmd = args[0] || 'help';
+
+  (async () => {
+    try {
+      if (cmd === 'status' || cmd === 'info') {
+        const info = await getStatus();
+        console.log(`✓ Connected to Remotey Agent at ${TARGET}`);
+        console.log(`  Screen: ${info.width}x${info.height}`);
+        console.log(`  Cursor: (${info.cursorX}, ${info.cursorY})`);
+        console.log(`  Active Window: "${info.activeWindow || 'Desktop'}"`);
+        console.log(`  Host: ${info.host || 'Unknown'} (User: ${info.user || 'Unknown'})`);
+      } else if (cmd === 'screenshot' || cmd === 'shot' || cmd === 'screen') {
+        const targetPath = args[1];
+        const res = await getScreenshot(targetPath);
+        console.log(`✓ Screenshot captured: ${res.path} (${Math.round(res.bytes / 1024)} KB)`);
+      } else if (cmd === 'click') {
+        const x = args[1], y = args[2], btn = args[3] || 'left';
+        if (!x || !y) throw new Error('Usage: remotey click <x> <y> [button]');
+        const r = await click(x, y, btn);
+        console.log(`✓ Clicked at (${r.x}, ${r.y}) [${r.button}]`);
+      } else if (cmd === 'dblclick') {
+        const x = args[1], y = args[2];
+        if (!x || !y) throw new Error('Usage: remotey dblclick <x> <y>');
+        const r = await click(x, y, 'left', 2);
+        console.log(`✓ Double-clicked at (${r.x}, ${r.y})`);
+      } else if (cmd === 'rightclick') {
+        const x = args[1], y = args[2];
+        if (!x || !y) throw new Error('Usage: remotey rightclick <x> <y>');
+        const r = await click(x, y, 'right', 1);
+        console.log(`✓ Right-clicked at (${r.x}, ${r.y})`);
+      } else if (cmd === 'move') {
+        const x = args[1], y = args[2];
+        if (!x || !y) throw new Error('Usage: remotey move <x> <y>');
+        const r = await move(x, y);
+        console.log(`✓ Cursor moved to (${r.x}, ${r.y})`);
+      } else if (cmd === 'type') {
+        const text = args.slice(1).join(' ');
+        if (!text) throw new Error('Usage: remotey type "<text>"');
+        const r = await typeText(text);
+        console.log(`✓ Typed: "${r.typed}"`);
+      } else if (cmd === 'key' || cmd === 'press') {
+        const key = args[1];
+        if (!key) throw new Error('Usage: remotey key <keyName> (e.g. enter, tab, esc, backspace)');
+        const r = await sendKey(key);
+        console.log(`✓ Sent key: ${r.keySent}`);
+      } else if (cmd === 'hotkey') {
+        const combo = args[1];
+        if (!combo) throw new Error('Usage: remotey hotkey <combo> (e.g. ctrl+c, alt+tab, win+r)');
+        const r = await sendHotkey(combo);
+        console.log(`✓ Sent hotkey: ${r.keySent}`);
+      } else if (cmd === 'scroll') {
+        const amount = args[1] || -200;
+        const r = await scroll(amount);
+        console.log(`✓ Scrolled: ${r.scrolled}`);
+      } else if (cmd === 'run') {
+        const command = args.slice(1).join(' ');
+        if (!command) throw new Error('Usage: remotey run "<powershell command>"');
+        const r = await runCommand(command);
+        if (r.stdout) console.log(r.stdout.trim());
+        if (r.stderr) console.error(r.stderr.trim());
+        process.exit(r.exitCode || 0);
+      } else if (cmd === 'install-skill' || cmd === 'init') {
+        const target = args[1] || 'all';
+        const installed = installSkill(target);
+        console.log(`✓ Remotey skill installed to:`);
+        installed.forEach(p => console.log(`  - ${p}`));
+        console.log(`\nYour AI agents (Antigravity, Claude, Cursor) now have Remotey computer-use capability.`);
+      } else if (cmd === 'set-target') {
+        const newTarget = args[1];
+        if (!newTarget) throw new Error('Usage: remotey set-target <http://IP:PORT>');
+        fs.mkdirSync(userConfigDir, { recursive: true });
+        const cur = fs.existsSync(userConfigPath) ? JSON.parse(fs.readFileSync(userConfigPath, 'utf8')) : {};
+        cur.target = newTarget;
+        fs.writeFileSync(userConfigPath, JSON.stringify(cur, null, 2));
+        console.log(`✓ Updated Remotey target to: ${newTarget}`);
+      } else {
+        console.log(`Remotey 🖥️  - Autonomous Computer-Use for AI Agents
+Target: ${TARGET}
+
+Usage:
+  npx remotey <command> [args]
+  remotey <command> [args]
+
+Commands:
+  status                     Verify connection & active window info
+  screenshot [destPath]      Capture remote desktop screenshot to PNG
+  click <x> <y> [button]     Click mouse at coordinate (left/right)
+  dblclick <x> <y>           Double click mouse at coordinate
+  rightclick <x> <y>         Right click mouse at coordinate
+  move <x> <y>               Move mouse cursor
+  type "<text>"              Type text string into active window
+  key <key>                  Send key press (enter, tab, esc, backspace)
+  hotkey <combo>             Send shortcut (ctrl+c, alt+tab, win+r)
+  scroll [amount]            Scroll mouse wheel (-200 down, 200 up)
+  run "<command>"            Execute PowerShell command directly on host
+  set-target <url>           Save default remote endpoint (e.g. http://100.x.y.z:7777)
+  install-skill [agent]      Register Remotey skill with Antigravity / Claude / Cursor
+
+Environment Variables:
+  REMOTEY_TARGET             Override target URL (e.g. http://100.x.y.z:7777)
+`);
+      }
+    } catch (err) {
+      console.error(`✗ Remotey Error: ${err.message}`);
+      process.exit(1);
+    }
+  })();
+}

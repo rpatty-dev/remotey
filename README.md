@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="assets/remotey.svg" alt="Remotey Logo" width="180" height="180">
-  <h1>Remotey 🖥️</h1>
+  <img src="assets/remotey.svg" alt="Remotey Banner" width="100%">
   <p><strong>Autonomous Computer-Use for AI Agents (Antigravity, Claude, Cursor) connecting Mac to Windows</strong></p>
 
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

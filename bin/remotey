@@ -8,8 +8,9 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const readline = require('readline');
 
-// Config discovery: ENV > local config.json > ~/.remotey/config.json > default
+// Config discovery: ENV > ~/.remotey/config.json > local config.json > default
 const userConfigDir = path.join(os.homedir(), '.remotey');
 const userConfigPath = path.join(userConfigDir, 'config.json');
 const localConfigPath = path.join(__dirname, '..', 'config.json');
@@ -47,7 +48,17 @@ async function request(endpoint, method = 'GET', body = null) {
 
 async function getStatus() {
   const res = await request('/status');
-  return await res.json();
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    // If trailing bytes were truncated, recover valid JSON substring
+    const lastBrace = text.lastIndexOf('}');
+    if (lastBrace > 0) {
+      return JSON.parse(text.substring(0, lastBrace + 1));
+    }
+    throw new Error(`Invalid JSON received from agent: ${text.slice(0, 80)}`);
+  }
 }
 
 async function getScreenshot(destPath = null) {
@@ -104,31 +115,116 @@ async function runCommand(command) {
   return await res.json();
 }
 
-function installSkill(targetAgent = 'all') {
+/**
+ * Autodetects known AI agent directories on the system.
+ */
+function detectAgentSkillDirs() {
   const homedir = os.homedir();
+  const cwd = process.cwd();
+
+  const candidates = [
+    { name: 'Google Antigravity (Global)', path: path.join(homedir, '.agents', 'skills', 'remotey') },
+    { name: 'Google Antigravity CLI Customizations', path: path.join(homedir, '.gemini', 'antigravity-cli', 'builtin', 'skills', 'remotey') },
+    { name: 'Claude Desktop / Claude Code', path: path.join(homedir, '.claude', 'skills', 'remotey') },
+    { name: 'Cursor IDE', path: path.join(homedir, '.cursor', 'skills', 'remotey') },
+    { name: 'Current Project Workspace', path: path.join(cwd, '.agents', 'skills', 'remotey') }
+  ];
+
+  return candidates;
+}
+
+function installSkillToPath(destPath) {
   const skillSource = path.join(__dirname, '..', 'skills', 'remotey');
-  const installedPaths = [];
 
-  // Antigravity skills directory
-  const antigravityDir = path.join(homedir, '.agents', 'skills', 'remotey');
-  // Claude Desktop / MCP directory
-  const claudeSkillsDir = path.join(homedir, '.claude', 'skills', 'remotey');
-  // Cursor skills directory
-  const cursorSkillsDir = path.join(homedir, '.cursor', 'skills', 'remotey');
-
-  const targets = [];
-  if (targetAgent === 'all' || targetAgent === 'antigravity') targets.push(antigravityDir);
-  if (targetAgent === 'all' || targetAgent === 'claude') targets.push(claudeSkillsDir);
-  if (targetAgent === 'all' || targetAgent === 'cursor') targets.push(cursorSkillsDir);
-
-  for (const t of targets) {
-    fs.mkdirSync(path.dirname(t), { recursive: true });
-    // Copy skill files
-    fs.cpSync(skillSource, t, { recursive: true });
-    installedPaths.push(t);
+  // Handle existing symlink or directory cleanly
+  if (fs.existsSync(destPath)) {
+    const stat = fs.lstatSync(destPath);
+    if (stat.isSymbolicLink() || stat.isFile()) {
+      fs.unlinkSync(destPath);
+    } else if (stat.isDirectory()) {
+      fs.rmSync(destPath, { recursive: true, force: true });
+    }
   }
 
-  return installedPaths;
+  fs.mkdirSync(path.dirname(destPath), { recursive: true });
+  fs.cpSync(skillSource, destPath, { recursive: true });
+  return destPath;
+}
+
+function installSkill() {
+  const candidates = detectAgentSkillDirs();
+  const installed = [];
+
+  for (const item of candidates) {
+    try {
+      installSkillToPath(item.path);
+      installed.push({ name: item.name, path: item.path });
+    } catch (e) {
+      // Ignore permission or inaccessible paths
+    }
+  }
+
+  return installed;
+}
+
+async function runInteractiveSetup() {
+  console.log(`
+======================================================
+  🖥️  Remotey Multi-Agent Setup & Auto-Discovery
+======================================================
+`);
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  const question = (q) => new Promise((resolve) => rl.question(q, resolve));
+
+  console.log('1. Configuring Windows Host Target URL:');
+  const current = config.target || 'http://127.0.0.1:7777';
+  const targetAnswer = await question(`   Enter Windows Tailscale or LAN IP (default: ${current}): `);
+  const chosenTarget = targetAnswer.trim() ? targetAnswer.trim() : current;
+  const formattedTarget = chosenTarget.startsWith('http') ? chosenTarget : `http://${chosenTarget}`;
+
+  fs.mkdirSync(userConfigDir, { recursive: true });
+  const curConfig = fs.existsSync(userConfigPath) ? JSON.parse(fs.readFileSync(userConfigPath, 'utf8')) : {};
+  curConfig.target = formattedTarget;
+  fs.writeFileSync(userConfigPath, JSON.stringify(curConfig, null, 2));
+  console.log(`   ✓ Target saved: ${formattedTarget}\n`);
+
+  console.log('2. Auto-detecting and Installing Skills into AI Agents:');
+  const installed = installSkill();
+  installed.forEach((item) => {
+    console.log(`   ✓ Installed skill for ${item.name}:`);
+    console.log(`     -> ${item.path}`);
+  });
+
+  console.log(`
+3. Verifying Connection to Host...`);
+  try {
+    const res = await fetch(`${formattedTarget}/status`, { signal: AbortSignal.timeout(2500) });
+    if (res.ok) {
+      const data = await res.json();
+      console.log(`   ✓ SUCCESS: Connected to Windows PC (${data.width}x${data.height}, Active: "${data.activeWindow}")`);
+    } else {
+      console.log(`   ⚠️ Host responded with HTTP ${res.status}. Ensure Remotey server is running on Windows.`);
+    }
+  } catch (err) {
+    console.log(`   ⚠️ Could not reach ${formattedTarget} (${err.message}).`);
+    console.log(`      Make sure START.bat is running on Windows and ESET/antivirus firewall is unblocking port 7777.`);
+  }
+
+  console.log(`
+======================================================
+  🚀 Setup Complete!
+  
+  Test anytime:
+    npx remotey status
+    npx remotey screenshot /tmp/test.png
+======================================================
+`);
+  rl.close();
 }
 
 module.exports = {
@@ -142,7 +238,8 @@ module.exports = {
   sendHotkey,
   scroll,
   runCommand,
-  installSkill
+  installSkill,
+  runInteractiveSetup
 };
 
 // CLI Execution
@@ -152,7 +249,9 @@ if (require.main === module) {
 
   (async () => {
     try {
-      if (cmd === 'status' || cmd === 'info') {
+      if (cmd === 'setup' || cmd === 'init') {
+        await runInteractiveSetup();
+      } else if (cmd === 'status' || cmd === 'info') {
         const info = await getStatus();
         console.log(`✓ Connected to Remotey Agent at ${TARGET}`);
         console.log(`  Screen: ${info.width}x${info.height}`);
@@ -209,11 +308,10 @@ if (require.main === module) {
         if (r.stdout) console.log(r.stdout.trim());
         if (r.stderr) console.error(r.stderr.trim());
         process.exit(r.exitCode || 0);
-      } else if (cmd === 'install-skill' || cmd === 'init') {
-        const target = args[1] || 'all';
-        const installed = installSkill(target);
-        console.log(`✓ Remotey skill installed to:`);
-        installed.forEach(p => console.log(`  - ${p}`));
+      } else if (cmd === 'install-skill') {
+        const installed = installSkill();
+        console.log(`✓ Remotey skill auto-detected and installed to:`);
+        installed.forEach(p => console.log(`  - ${p.name}: ${p.path}`));
         console.log(`\nYour AI agents (Antigravity, Claude, Cursor) now have Remotey computer-use capability.`);
       } else if (cmd === 'set-target') {
         const newTarget = args[1];
@@ -228,26 +326,23 @@ if (require.main === module) {
 Target: ${TARGET}
 
 Usage:
-  npx remotey <command> [args]
-  remotey <command> [args]
-
-Commands:
-  status                     Verify connection & active window info
-  screenshot [destPath]      Capture remote desktop screenshot to PNG
-  click <x> <y> [button]     Click mouse at coordinate (left/right)
-  dblclick <x> <y>           Double click mouse at coordinate
-  rightclick <x> <y>         Right click mouse at coordinate
-  move <x> <y>               Move mouse cursor
-  type "<text>"              Type text string into active window
-  key <key>                  Send key press (enter, tab, esc, backspace)
-  hotkey <combo>             Send shortcut (ctrl+c, alt+tab, win+r)
-  scroll [amount]            Scroll mouse wheel (-200 down, 200 up)
-  run "<command>"            Execute PowerShell command directly on host
-  set-target <url>           Save default remote endpoint (e.g. http://100.x.y.z:7777)
-  install-skill [agent]      Register Remotey skill with Antigravity / Claude / Cursor
+  npx remotey setup                  Run interactive setup & auto-discovery
+  npx remotey install-skill          Auto-detect & install skill to all agents
+  npx remotey status                 Verify connection & active window info
+  npx remotey screenshot [path]      Capture remote desktop screenshot
+  npx remotey click <x> <y> [btn]    Click mouse at coordinate (left/right)
+  npx remotey dblclick <x> <y>       Double click mouse at coordinate
+  npx remotey rightclick <x> <y>     Right click mouse at coordinate
+  npx remotey move <x> <y>           Move mouse cursor
+  npx remotey type "<text>"          Type text string into active window
+  npx remotey key <key>              Send key press (enter, tab, esc, backspace)
+  npx remotey hotkey <combo>         Send shortcut (ctrl+c, alt+tab, win+r)
+  npx remotey scroll [amount]        Scroll mouse wheel (-200 down, 200 up)
+  npx remotey run "<command>"        Execute PowerShell command directly on host
+  npx remotey set-target <url>       Save default remote endpoint (e.g. http://100.x.y.z:7777)
 
 Environment Variables:
-  REMOTEY_TARGET             Override target URL (e.g. http://100.x.y.z:7777)
+  REMOTEY_TARGET                     Override target URL (e.g. http://100.x.y.z:7777)
 `);
       }
     } catch (err) {

@@ -103,12 +103,14 @@ while ($true) {
                 user = $env:USERNAME 
             } | ConvertTo-Json
 
+            $jsonBytes = [System.Text.Encoding]::UTF8.GetBytes($json)
             $writer.WriteLine('HTTP/1.1 200 OK')
             $writer.WriteLine('Access-Control-Allow-Origin: *')
-            $writer.WriteLine('Content-Type: application/json')
-            $writer.WriteLine("Content-Length: $($json.Length)")
+            $writer.WriteLine('Content-Type: application/json; charset=utf-8')
+            $writer.WriteLine("Content-Length: $($jsonBytes.Length)")
             $writer.WriteLine('')
-            $writer.Write($json)
+            $writer.Flush()
+            $stream.Write($jsonBytes, 0, $jsonBytes.Length)
         }
         elseif ($path -eq '/screenshot') {
             $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds

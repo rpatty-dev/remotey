@@ -146,6 +146,13 @@ When an AI Agent is asked to accomplish a desktop task:
 
 ---
 
+## 🤝 Credits & Acknowledgements
+
+- Created and maintained by [**rpatty-dev**](https://github.com/rpatty-dev)
+- Built with help from [**nitech**](https://nitech.dev)
+
+---
+
 ## 📄 License
 
-MIT © [Ryan Pattison](https://github.com/rpatty-dev)
+MIT © [rpatty-dev](https://github.com/rpatty-dev)

@@ -85,6 +85,25 @@ This installs the `remotey` skill into `~/.agents/skills/remotey` and `~/.claude
 
 ---
 
+## 1-Shot AI Agent Prompt (Copy & Paste)
+
+You can install Remotey into any AI agent (Claude Code, Antigravity, Cursor, Windsurf, OpenDevin) by pasting this single prompt directly into the agent's chat:
+
+```markdown
+Install the Remotey computer-use skill from https://github.com/rpatty-dev/remotey so you can control my remote machine. 
+
+To install:
+1. Clone https://github.com/rpatty-dev/remotey.git to /tmp/remotey-install
+2. Copy the skill folder /tmp/remotey-install/skills/remotey into your agent's active skills directory:
+   - For Antigravity: ~/.agents/skills/remotey
+   - For Claude: ~/.claude/skills/remotey
+   - For Cursor: ~/.cursor/skills/remotey
+3. Install the CLI binary globally or link /tmp/remotey-install/bin/remotey into /usr/local/bin/remotey
+4. Test by running `remotey --help` and verify the skill is registered.
+```
+
+---
+
 ## CLI Reference
 
 | Command | Arguments | Description |
